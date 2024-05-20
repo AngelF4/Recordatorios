@@ -1,0 +1,7 @@
+{
+  "name": "Recordatorios",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
