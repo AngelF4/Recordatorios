@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
+  repeatArray = Array(15).fill(0)
   constructor() {}
 
 }

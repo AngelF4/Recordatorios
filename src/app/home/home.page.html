@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Recordatorios
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,12 +9,31 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">Recordatorios</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <ion-list [inset]="true" mode="ios">
+    <ion-item-sliding *ngFor="let item of repeatArray; let i = index">
+      <!-- hice un for para repetir el elemnto y se pueda ver la lista,
+      el array es de 15 de largo, su proposito fue de unicamente para pruebas -->
+      <ion-item>
+        <ion-label>Item {{i + 1}}</ion-label>
+      </ion-item>
+      <ion-item-options side="start">
+        <ion-item-option expandable>Terminar</ion-item-option>
+      </ion-item-options>
+      <ion-item-options side="end">
+        <ion-item-option color="primary">Editar</ion-item-option>
+        <ion-item-option color="danger" expandable>
+          <ion-icon slot="start" name="trash"></ion-icon>
+          Borrar
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+    <!-- El chiste de aqui es agregar un ion-modal que se active al darle
+    click al boton editar para editar el elemento -->
+    <!-- aqui les dejo el link de los ion-modal:
+    https://ionicframework.com/docs/api/modal -->
+  </ion-list>
 </ion-content>
