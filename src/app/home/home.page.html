@@ -3,13 +3,35 @@
     <ion-title>
       Recordatorios
     </ion-title>
+    <ion-buttons slot="primary">
+      <ion-button fill="clear" id="settings">
+        <ion-icon name="ellipsis-horizontal-circle-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
+<ion-popover trigger="settings" [translucent]="true" [isOpen]="isOpen" (didDismiss)="isOpen = false">
+  <ng-template>
+    <ion-content>
+        <ion-list>
+          <ion-button fill="clear" (click)="irAConfig()">
+            <ion-icon name="cog-outline"></ion-icon>
+            <ion-item>Configuracion</ion-item>
+          </ion-button>
+          <ion-button fill="clear" color="danger" (click)="irALogin()">
+            <ion-icon name="exit-outline"></ion-icon>
+            <ion-item >Cerrar sesion</ion-item>
+          </ion-button>
+        </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-popover>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Recordatorios</ion-title>
+      <ion-title size="large" color="naranja">Recordatorios</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -27,7 +49,6 @@
         <ion-item-option color="primary">Editar</ion-item-option>
         <ion-item-option color="danger" expandable>
           <ion-icon slot="start" name="trash"></ion-icon>
-          Borrar
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
@@ -37,3 +58,14 @@
     https://ionicframework.com/docs/api/modal -->
   </ion-list>
 </ion-content>
+
+<ion-footer [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-button fill="clear" color="naranja">
+        <ion-icon name="add-circle"></ion-icon>
+        <b>Nuevo</b>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { PopoverController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -6,8 +8,25 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  @ViewChild('popover') popover: any;
 
   repeatArray = Array(15).fill(0)
-  constructor() {}
+  constructor(private router: Router, private popoverCtrl: PopoverController) {}
 
+  isOpen = false;
+
+  presentPopover(e: Event) {
+    this.popover.event = e;
+    this.isOpen = true;
+  }
+  irAConfig(){
+    this.isOpen = false;
+    this.popoverCtrl.dismiss();
+    this.router.navigate(['/config']);
+  }
+
+  irALogin(){
+    this.popoverCtrl.dismiss();
+    this.router.navigate(['/login']);
+  }
 }

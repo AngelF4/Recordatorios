@@ -35,3 +35,22 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+
+:root {
+	--ion-color-naranja: #ff9400;
+	--ion-color-naranja-rgb: 255,148,0;
+	--ion-color-naranja-contrast: #000000;
+	--ion-color-naranja-contrast-rgb: 0,0,0;
+	--ion-color-naranja-shade: #e08200;
+	--ion-color-naranja-tint: #ff9f1a;
+}
+
+.ion-color-naranja {
+	--ion-color-base: var(--ion-color-naranja);
+	--ion-color-base-rgb: var(--ion-color-naranja-rgb);
+	--ion-color-contrast: var(--ion-color-naranja-contrast);
+	--ion-color-contrast-rgb: var(--ion-color-naranja-contrast-rgb);
+	--ion-color-shade: var(--ion-color-naranja-shade);
+	--ion-color-tint: var(--ion-color-naranja-tint);
+}
