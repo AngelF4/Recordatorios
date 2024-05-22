@@ -43,7 +43,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-list  mode="ios">
+  <ion-list  mode="ios" [inset]="true">
     <ion-item-sliding *ngFor="let item of repeatArray; let i = index">
       <!-- hice un for para repetir el elemnto y se pueda ver la lista,
       el array es de 15 de largo, su proposito fue de unicamente para pruebas -->
@@ -51,7 +51,7 @@
         <ion-checkbox slot="start" aria-label="Toggle task completion"></ion-checkbox>
         <ion-input aria-label="Task name" value="Get milk"></ion-input>
       </ion-item> -->
-      <ion-item>
+      <ion-item class="recordatorioItem">
         <ion-label>
         <ion-checkbox labelPlacement="end" justify="start" mode="ios">Recordatorio {{i + 1}}</ion-checkbox>
         <p id="details">Nota <br> 01/01/01, 1:00 pm</p>  

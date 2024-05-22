@@ -46,7 +46,7 @@ export class LoginPage implements OnInit {
       this.userService.login(formData)
         .then(response => {
           console.log(response);
-          this.router.navigate(['/config']);
+          this.router.navigate(['/home']);
         })
         .catch(error => console.log(error));  
   }

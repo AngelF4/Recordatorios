@@ -14,12 +14,20 @@
     </ion-toolbar>
   </ion-header>
 
+    <ion-list-header>Apariencia</ion-list-header>
+      <ion-list [inset]="true">
+        <ion-item>
+          <ion-toggle [(ngModel)]="paletteToggle" (ionChange)="toggleChange($event)" justify="space-between" color="success">
+            Modo oscuro 🌙
+          </ion-toggle>
+        </ion-item>
+      </ion-list>
+
   <ion-list [inset]="true">
-    
-    <ion-item>
+    <ion-item [button]="true">
       <ion-label>Opcion 1</ion-label>
     </ion-item>
-    <ion-item>
+    <ion-item [button]="true">
       <ion-label>Opcion 2</ion-label>
     </ion-item>
   </ion-list>
@@ -45,6 +53,7 @@
   <br>
   <ion-note color="medium" class="ion-margin-horizontal">
      Lenguajes modernos de programacion ®️</ion-note>
-
+  <br>
+    <ion-note class="ion-margin-horizontal">Version 0.1 alpha</ion-note>
   
 </ion-content>
