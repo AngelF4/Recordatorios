@@ -9,11 +9,11 @@ export class UserService {
 
   constructor(private auth: Auth) { }
 
-  signUp({email, password}: any){
+  register({email, password}: any){
     return createUserWithEmailAndPassword(this.auth, email, password);
   }
 
-  signIn({name, email,password}: any){
+  login({name, email,password}: any){
     return signInWithEmailAndPassword(this.auth,email,password)
   }
 

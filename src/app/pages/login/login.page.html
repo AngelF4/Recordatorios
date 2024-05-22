@@ -14,22 +14,22 @@
       </ion-toolbar>
       <div class="para">Inicia sesion para continuar</div>
     </ion-header>
-    <form action="">
+    <form (ngSubmit)="onSubmit()">
       <ion-item lines="none" class="ion-item">
         <fieldset  class="input-item">
           <legend>Email</legend> 
-          <ion-input  type="email" placeholder="name@domain.com"></ion-input>
+          <ion-input  type="email" [(ngModel)]="email" name="email" placeholder="name@domain.com"></ion-input>
         </fieldset>
       </ion-item>
       <ion-item lines="none" class="ion-item">
         <fieldset class="input-item">
           <legend>Password</legend> 
-          <ion-input type="password" placeholder="*******"></ion-input>
+          <ion-input type="password" [(ngModel)]="password" name="password" required minlength="6" placeholder="*******"></ion-input>
         </fieldset>
       </ion-item>
       <p class="forget-text"><a (click)="change('forget')">Forgot Password?</a></p>
       <p class="signup-text">I'm a new user&nbsp;<a (click)="change('signup')">Sign Up?</a></p>
-      <ion-button class="login-button"  expand="block">Entrar</ion-button>
+      <ion-button class="login-button"  expand="block" type="submit">Entrar</ion-button>
   
     </form>
   </div>
@@ -40,7 +40,7 @@
       </ion-toolbar>
       <div class="para">Registrate para continuar</div>
     </ion-header>
-    <form action="">
+    <form (ngSubmit)="onSubmit()">
       <ion-item lines="none" class="ion-item">
         <fieldset  class="input-item">
           <legend>Nombre completo</legend> 
@@ -50,19 +50,19 @@
       <ion-item lines="none" class="ion-item">
         <fieldset  class="input-item">
           <legend>Email</legend> 
-          <ion-input  type="email" placeholder="john@doe.com"></ion-input>
+          <ion-input type="email" [(ngModel)]="email" name="email" placeholder="john@doe.com"></ion-input>
         </fieldset>
       </ion-item>
       <ion-item lines="none" class="ion-item">
         <fieldset class="input-item">
           <legend>Password</legend> 
-          <ion-input  type="password" placeholder="*******"></ion-input>
+          <ion-input  type="password" [(ngModel)]="password" name="password" required minlength="6" placeholder="*******"></ion-input>
         </fieldset>
       </ion-item>
       <p class="signup-text">I'm already a member&nbsp;<a (click)="change('signin')">Sign In?</a></p>
-      <ion-button class="login-button"  expand="block">Sign Up</ion-button>
-      
+      <ion-button class="login-button" expand="full" type="submit">Sign Up</ion-button>
     </form>
+    
   </div>
   <div *ngIf="screen == 'forget'">
     <ion-header collapse="condense">
