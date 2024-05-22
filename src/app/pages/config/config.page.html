@@ -7,14 +7,44 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
+<ion-content [fullscreen]="true" color="light">
+  <ion-header collapse="condense" >
+    <ion-toolbar color="light">
       <ion-title size="large">Configuracion</ion-title>
     </ion-toolbar>
   </ion-header>
 
+  <ion-list [inset]="true">
+    
+    <ion-item>
+      <ion-label>Opcion 1</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Opcion 2</ion-label>
+    </ion-item>
+  </ion-list>
 
+  <ion-list [inset]="true">
+    <ion-item>
+      <ion-toggle color="success">
+        <ion-label>Permitir notificaciones 🔔</ion-label>
+        <ion-note color="medium">Unsubscribe at any time</ion-note>
+      </ion-toggle>
+    </ion-item>
+  </ion-list>
+
+  <ion-list [inset]="true">
+    <ion-item>
+      <ion-textarea label="Commentarios" labelPlacement="floating" rows="5"></ion-textarea>
+    </ion-item>
+  </ion-list>
+
+  <ion-note color="medium" class="ion-margin-horizontal">
+    Los comentarios son de prueba
+  </ion-note>
+  <br>
+  <ion-note color="medium" class="ion-margin-horizontal">
+     Lenguajes modernos de programacion ®️</ion-note>
 
   
 </ion-content>

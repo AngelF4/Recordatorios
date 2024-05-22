@@ -14,14 +14,22 @@
 <ion-popover trigger="settings" [translucent]="true" [isOpen]="isOpen" (didDismiss)="isOpen = false">
   <ng-template>
     <ion-content>
-        <ion-list>
-          <ion-button fill="clear" (click)="irAConfig()">
-            <ion-icon name="cog-outline"></ion-icon>
-            <ion-item>Configuracion</ion-item>
-          </ion-button>
-          <ion-button fill="clear" color="danger" (click)="irALogin()">
+        <ion-list lines="full">
+          <ion-item>
+            <ion-chip color="naranja">
+              <ion-avatar>
+                <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+              </ion-avatar>
+              <ion-label>Usuario</ion-label>
+            </ion-chip>
+          </ion-item>
+            <ion-button fill="clear" (click)="irAConfig()">
+              <ion-icon name="cog-outline"></ion-icon>
+              <ion-item>Configuracion</ion-item>
+            </ion-button>
+          <ion-button fill="clear" color="borrar" (click)="irALogin()">
             <ion-icon name="exit-outline"></ion-icon>
-            <ion-item >Cerrar sesion</ion-item>
+            <ion-item id="cerrarSesion">Cerrar sesion</ion-item>
           </ion-button>
         </ion-list>
     </ion-content>
@@ -35,20 +43,29 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-list [inset]="true" mode="ios">
+  <ion-list  mode="ios">
     <ion-item-sliding *ngFor="let item of repeatArray; let i = index">
       <!-- hice un for para repetir el elemnto y se pueda ver la lista,
       el array es de 15 de largo, su proposito fue de unicamente para pruebas -->
+      <!-- <ion-item>
+        <ion-checkbox slot="start" aria-label="Toggle task completion"></ion-checkbox>
+        <ion-input aria-label="Task name" value="Get milk"></ion-input>
+      </ion-item> -->
       <ion-item>
-        <ion-label>Item {{i + 1}}</ion-label>
+        <ion-label>
+        <ion-checkbox labelPlacement="end" justify="start">Recordatorio {{i + 1}}</ion-checkbox>
+        <p id="details">Nota <br> 01/01/01, 1:00 pm</p>  
+        <!-- Para usar los elementos, hay que guardarlos en ts, y desplegarlos de la forma {{variable}}
+        si el usuario no le da un valos a notas, fecha ni hora, hay que dejar el espacio vacio -->
+        </ion-label>
       </ion-item>
       <ion-item-options side="start">
-        <ion-item-option expandable>Terminar</ion-item-option>
+        <ion-item-option color="caffe" expandable id="terminarBtn">Opcion</ion-item-option>
       </ion-item-options>
       <ion-item-options side="end">
-        <ion-item-option color="primary">Editar</ion-item-option>
-        <ion-item-option color="danger" expandable>
-          <ion-icon slot="start" name="trash"></ion-icon>
+        <ion-item-option color="gris" id="editarBtn">Detalles</ion-item-option>
+        <ion-item-option color="borrar" expandable id="eliminarBtn">
+          Eliminar
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
