@@ -53,38 +53,37 @@
     </ion-header>
   
     <ion-list  mode="ios" [inset]="true">
-      <ion-item-sliding *ngFor="let item of repeatArray; let i = index">
-        <!-- hice un for para repetir el elemnto y se pueda ver la lista,
-        el array es de 15 de largo, su proposito fue de unicamente para pruebas -->
-        <!-- <ion-item>
-          <ion-checkbox slot="start" aria-label="Toggle task completion"></ion-checkbox>
-          <ion-input aria-label="Task name" value="Get milk"></ion-input>
-        </ion-item> -->
+
+      <ion-item-sliding *ngFor="let recordatorio of recordatorios">
+
         <ion-item class="recordatorioItem">
           <ion-label>
-          <ion-checkbox labelPlacement="end" justify="start" mode="ios">Recordatorio {{i + 1}}</ion-checkbox>
-          <p id="details">Nota <br> 01/01/01, 1:00 pm</p>  
-          <!-- Para usar los elementos, hay que guardarlos en ts, y desplegarlos de la forma {{variable}}
-          si el usuario no le da un valos a notas, fecha ni hora, hay que dejar el espacio vacio -->
+          <ion-checkbox labelPlacement="end" justify="start" mode="ios">{{recordatorio.title}}</ion-checkbox>
+          <p id="details">{{recordatorio.notes}} <br> {{ recordatorio.date.toDate() | date: 'yyyy-MM-ddTHH:mm:ssZ' }}</p>  
           </ion-label>
+
+
         </ion-item>
+
         <ion-item-options side="start">
           <ion-item-option color="caffe" expandable id="terminarBtn" >Opcion</ion-item-option>
         </ion-item-options>
-        <ion-item-options side="end">
+
+        <ion-item-options side="end" *ngIf="recordatorio">
           <ion-item-option color="gris" id="editarBtn" expand="block">Detalles</ion-item-option>
-          <ion-item-option color="borrar" expandable id="eliminarBtn">
+          <ion-item-option color="borrar" expandable id="eliminarBtn" (click)="onClcikDelete(recordatorio)">
             Eliminar
           </ion-item-option>
-        </ion-item-options>
-        
+        </ion-item-options> 
       </ion-item-sliding>
-      <!-- El chiste de aqui es agregar un ion-modal que se active al darle
-      click al boton editar para editar el elemento -->
-      <!-- aqui les dejo el link de los ion-modal:
-      https://ionicframework.com/docs/api/modal -->
+
+  
+      <!--https://ionicframework.com/docs/api/modal -->
+      
     </ion-list>
     
+
+
   </div>
   <div *ngIf="segmentValue == 'calendario'">
     <ion-header collapse="condense" mode="ios">
@@ -155,7 +154,7 @@
         <ion-toolbar>
           <ion-title>Nuevo Recordatiorio</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="modal.dismiss()" (ngSubmit)="onSubmit()">Listo</ion-button>
+            <ion-button (click)="dismissModal()">Listo</ion-button>
           </ion-buttons>
         </ion-toolbar>
 
@@ -173,7 +172,11 @@
             </ion-item>
 
             <ion-item>
-              <ion-datetime value="2024-05-24T00:00:00" min="2024-05-24T00:00:00" max="2224-05-31T23:59:59"[(ngModel)]="date" name="date">
+              <ion-datetime [value]="date" [min]="date" max="2224-05-31T23:59:59"[(ngModel)]="date" name="date">
+                <ion-buttons slot="buttons">
+                  <ion-button color="danger" (click)="dismissModal()">Cerrar</ion-button>
+                  <ion-button type="submit" (ngSubmit)="onSubmit()" color="primary" (click)="dismissModal()">Agregar </ion-button>
+                </ion-buttons> 
               </ion-datetime>
             </ion-item>
           </form>

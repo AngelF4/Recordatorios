@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { CheckboxCustomEvent } from '@ionic/angular';
 import { UserService } from 'src/app/services/user.service';
 import { Timestamp } from 'firebase/firestore';
+import { ModalController } from '@ionic/angular';
+import { Recordatorio } from '../interfaces/recordatorio';
 
 @Component({
   selector: 'app-home',
@@ -15,11 +17,20 @@ export class HomePage {
   title: string = '';
   notes: string = '';
   date: string = new Date().toISOString();
+  recordatorios: Recordatorio[]=[];
+  
+  
 
   repeatArray = Array(15).fill(0)
   constructor(private router: Router, 
               private popoverCtrl: PopoverController,
-              private user: UserService) {}
+              private user: UserService,
+              private modalCtrl: ModalController           
+            ) {
+
+                const now = new Date();
+                this.date = now.toISOString();
+              }
 
   canDismiss = false;
   presentingElement: any;
@@ -29,6 +40,10 @@ export class HomePage {
 
   ngOnInit() {
     this.presentingElement = document.querySelector('ion-content');
+    this.user.getRecordatorios().subscribe(recordatorios => {
+      console.log(recordatorios);
+      this.recordatorios = recordatorios;
+    })
   }
 
   onTermsChanged(event: Event) {
@@ -55,17 +70,27 @@ export class HomePage {
     this.router.navigate(['/login']);
   }
 
+  dismissModal() {
+    this.modalCtrl.dismiss();
+  }
+
   async onSubmit() {
-    const dateTimestamp = Timestamp.fromDate(new Date(this.date));
+    const now = new Date();
+    const dateTimestamp = Timestamp.fromDate(now);
     const formData = {
       title: this.title,
       notes: this.notes,
       date: dateTimestamp 
     };
-
+  
     console.log(formData);
     const response = await this.user.addRecordatorio(formData);
     console.log(response);
+  }
+
+  async onClcikDelete(recordatorio: Recordatorio){
+    const response = await this.user.deleteRecordatorio(recordatorio);
+    console.log('Respuesta de eliminación:', response);
   }
 
 }
