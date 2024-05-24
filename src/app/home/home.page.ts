@@ -13,7 +13,12 @@ export class HomePage {
   repeatArray = Array(15).fill(0)
   constructor(private router: Router, private popoverCtrl: PopoverController) {}
 
+  segmentValue:String = 'lista';
   isOpen = false;
+
+  segmentChanged(event: any) {
+    this.segmentValue = event.detail.value;
+  }
 
   presentPopover(e: Event) {
     this.popover.event = e;
@@ -29,4 +34,6 @@ export class HomePage {
     this.popoverCtrl.dismiss();
     this.router.navigate(['/login']);
   }
+
+  
 }

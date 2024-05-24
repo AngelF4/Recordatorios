@@ -1,13 +1,21 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
+    <!-- <ion-title>
       Recordatorios
-    </ion-title>
+    </ion-title> -->
     <ion-buttons slot="primary">
       <ion-button fill="clear" id="settings">
         <ion-icon name="ellipsis-horizontal-circle-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
+    <ion-segment value="lista" (ionChange)="segmentChanged($event)">
+      <ion-segment-button value="lista">
+        <ion-label>Lista</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="calendario">
+        <ion-label>Calendario</ion-label>
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
 </ion-header>
 
@@ -37,43 +45,71 @@
 </ion-popover>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large" color="naranja">Recordatorios</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div *ngIf="segmentValue == 'lista'">
+    <ion-header collapse="condense" mode="ios">
+      <ion-toolbar>
+        <ion-title size="large" color="naranja">Recordatorios</ion-title>
+      </ion-toolbar>
+    </ion-header>
+  
+    <ion-list  mode="ios" [inset]="true">
+      <ion-item-sliding *ngFor="let item of repeatArray; let i = index">
+        <!-- hice un for para repetir el elemnto y se pueda ver la lista,
+        el array es de 15 de largo, su proposito fue de unicamente para pruebas -->
+        <!-- <ion-item>
+          <ion-checkbox slot="start" aria-label="Toggle task completion"></ion-checkbox>
+          <ion-input aria-label="Task name" value="Get milk"></ion-input>
+        </ion-item> -->
+        <ion-item class="recordatorioItem">
+          <ion-label>
+          <ion-checkbox labelPlacement="end" justify="start" mode="ios">Recordatorio {{i + 1}}</ion-checkbox>
+          <p id="details">Nota <br> 01/01/01, 1:00 pm</p>  
+          <!-- Para usar los elementos, hay que guardarlos en ts, y desplegarlos de la forma {{variable}}
+          si el usuario no le da un valos a notas, fecha ni hora, hay que dejar el espacio vacio -->
+          </ion-label>
+        </ion-item>
+        <ion-item-options side="start">
+          <ion-item-option color="caffe" expandable id="terminarBtn">Opcion</ion-item-option>
+        </ion-item-options>
+        <ion-item-options side="end">
+          <ion-item-option color="gris" id="editarBtn">Detalles</ion-item-option>
+          <ion-item-option color="borrar" expandable id="eliminarBtn">
+            Eliminar
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+      <!-- El chiste de aqui es agregar un ion-modal que se active al darle
+      click al boton editar para editar el elemento -->
+      <!-- aqui les dejo el link de los ion-modal:
+      https://ionicframework.com/docs/api/modal -->
+    </ion-list>
+  </div>
+  <div *ngIf="segmentValue == 'calendario'">
+    <ion-header collapse="condense" mode="ios">
+      <ion-toolbar>
+        <ion-title size="large" color="naranja">Calendario</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-datetime presentation="date"></ion-datetime>
+    <ion-list [inset]="true">
+      <ion-item-sliding *ngFor="let item of repeatArray; let i = index">
+        <ion-item>
+          <ion-checkbox slot="start" aria-label="Toggle task completion"></ion-checkbox>
+          <ion-input aria-label="Task name" value="recordario {{i + 1}}"></ion-input>
+        </ion-item>
 
-  <ion-list  mode="ios" [inset]="true">
-    <ion-item-sliding *ngFor="let item of repeatArray; let i = index">
-      <!-- hice un for para repetir el elemnto y se pueda ver la lista,
-      el array es de 15 de largo, su proposito fue de unicamente para pruebas -->
-      <!-- <ion-item>
-        <ion-checkbox slot="start" aria-label="Toggle task completion"></ion-checkbox>
-        <ion-input aria-label="Task name" value="Get milk"></ion-input>
-      </ion-item> -->
-      <ion-item class="recordatorioItem">
-        <ion-label>
-        <ion-checkbox labelPlacement="end" justify="start" mode="ios">Recordatorio {{i + 1}}</ion-checkbox>
-        <p id="details">Nota <br> 01/01/01, 1:00 pm</p>  
-        <!-- Para usar los elementos, hay que guardarlos en ts, y desplegarlos de la forma {{variable}}
-        si el usuario no le da un valos a notas, fecha ni hora, hay que dejar el espacio vacio -->
-        </ion-label>
-      </ion-item>
-      <ion-item-options side="start">
-        <ion-item-option color="caffe" expandable id="terminarBtn">Opcion</ion-item-option>
-      </ion-item-options>
-      <ion-item-options side="end">
-        <ion-item-option color="gris" id="editarBtn">Detalles</ion-item-option>
-        <ion-item-option color="borrar" expandable id="eliminarBtn">
-          Eliminar
-        </ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
-    <!-- El chiste de aqui es agregar un ion-modal que se active al darle
-    click al boton editar para editar el elemento -->
-    <!-- aqui les dejo el link de los ion-modal:
-    https://ionicframework.com/docs/api/modal -->
-  </ion-list>
+        <ion-item-options side="start">
+          <ion-item-option color="caffe" expandable id="terminarBtn">Opcion</ion-item-option>
+        </ion-item-options>
+        <ion-item-options side="end">
+          <ion-item-option color="gris" id="editarBtn">Detalles</ion-item-option>
+          <ion-item-option color="borrar" expandable id="eliminarBtn">
+            Eliminar
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+  </div>
 </ion-content>
 
 <ion-footer [translucent]="true">
