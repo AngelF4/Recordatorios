@@ -77,12 +77,14 @@
             Eliminar
           </ion-item-option>
         </ion-item-options>
+        
       </ion-item-sliding>
       <!-- El chiste de aqui es agregar un ion-modal que se active al darle
       click al boton editar para editar el elemento -->
       <!-- aqui les dejo el link de los ion-modal:
       https://ionicframework.com/docs/api/modal -->
     </ion-list>
+    
   </div>
   <div *ngIf="segmentValue == 'calendario'">
     <ion-header collapse="condense" mode="ios">
@@ -110,7 +112,7 @@
       </ion-item-sliding>
     </ion-list>
   </div>
-  <ion-modal #modal trigger="editarBtn" [presentingElement]="presentingElement" color="light">
+  <ion-modal #modal trigger="editarBtn" [presentingElement]="presentingElement" >
     <ng-template>
       <ion-header>
         <ion-toolbar>
@@ -142,7 +144,42 @@
             </ion-toggle>
           </ion-item>
         </ion-list>
-        
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal #modal trigger="nuevo" [presentingElement]="presentingElement" >
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Nuevo Recordatiorio</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="modal.dismiss()">Listo</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content color="light">
+        <ion-list [inset]="true">
+          <ion-item>
+            <ion-input aria-label="Task name" placeholder="Titulo"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input placeholder="Notas"></ion-input>
+          </ion-item>
+        </ion-list>
+
+        <ion-list [inset]="true">
+          <ion-item>
+            <ion-toggle justify="space-between" color="success">
+              Fecha
+            </ion-toggle>
+          </ion-item>
+          <ion-item>
+            <ion-toggle justify="space-between" color="success">
+              Hora
+            </ion-toggle>
+          </ion-item>
+        </ion-list>
       </ion-content>
     </ng-template>
   </ion-modal>
@@ -151,7 +188,7 @@
 <ion-footer [translucent]="true">
   <ion-toolbar>
     <ion-buttons>
-      <ion-button fill="clear" color="naranja">
+      <ion-button fill="clear" color="naranja" id="nuevo">
         <ion-icon name="add-circle"></ion-icon>
         <b>Nuevo</b>
       </ion-button>
