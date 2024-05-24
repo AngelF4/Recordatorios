@@ -151,28 +151,33 @@
   <ion-modal #modal trigger="nuevo" [presentingElement]="presentingElement" >
     <ng-template>
       <ion-header>
+
         <ion-toolbar>
           <ion-title>Nuevo Recordatiorio</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="modal.dismiss()">Listo</ion-button>
+            <ion-button (click)="modal.dismiss()" (ngSubmit)="onSubmit()">Listo</ion-button>
           </ion-buttons>
         </ion-toolbar>
+
       </ion-header>
       <ion-content color="light">
-        <ion-list [inset]="true">
-          <ion-item>
-            <ion-input aria-label="Task name" placeholder="Titulo"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input placeholder="Notas"></ion-input>
-          </ion-item>
-        </ion-list>
 
-        <ion-list [inset]="true">
-          <ion-item>
-            <ion-datetime></ion-datetime>
-          </ion-item>
-        </ion-list>
+          <form (ngSubmit)="onSubmit()">
+
+            <ion-item>
+              <ion-input [(ngModel)]="title" name="title" aria-label="Task name" placeholder="Titulo"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-input [(ngModel)]="notes" name="notes" placeholder="Notas"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-datetime value="2024-05-24T00:00:00" min="2024-05-24T00:00:00" max="2224-05-31T23:59:59"[(ngModel)]="date" name="date">
+              </ion-datetime>
+            </ion-item>
+          </form>
+
       </ion-content>
     </ng-template>
   </ion-modal>

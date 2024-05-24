@@ -2,6 +2,8 @@ import { Component, ViewChild } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { CheckboxCustomEvent } from '@ionic/angular';
+import { UserService } from 'src/app/services/user.service';
+import { Timestamp } from 'firebase/firestore';
 
 @Component({
   selector: 'app-home',
@@ -10,9 +12,14 @@ import { CheckboxCustomEvent } from '@ionic/angular';
 })
 export class HomePage {
   @ViewChild('popover') popover: any;
+  title: string = '';
+  notes: string = '';
+  date: string = new Date().toISOString();
 
   repeatArray = Array(15).fill(0)
-  constructor(private router: Router, private popoverCtrl: PopoverController) {}
+  constructor(private router: Router, 
+              private popoverCtrl: PopoverController,
+              private user: UserService) {}
 
   canDismiss = false;
   presentingElement: any;
@@ -48,5 +55,18 @@ export class HomePage {
     this.router.navigate(['/login']);
   }
 
-  
+  async onSubmit() {
+    const dateTimestamp = Timestamp.fromDate(new Date(this.date));
+    const formData = {
+      title: this.title,
+      notes: this.notes,
+      date: dateTimestamp 
+    };
+
+    console.log(formData);
+    const response = await this.user.addRecordatorio(formData);
+    console.log(response);
+  }
+
 }
+

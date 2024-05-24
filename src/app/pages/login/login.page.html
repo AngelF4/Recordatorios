@@ -40,6 +40,7 @@
       </ion-toolbar>
       <div class="para">Registrate para continuar</div>
     </ion-header>
+
     <form (ngSubmit)="onSubmit()">
       <ion-item lines="none" class="ion-item">
         <fieldset  class="input-item">
@@ -62,6 +63,7 @@
       <p class="signup-text">I'm already a member&nbsp;<a (click)="change('signin')">Sign In?</a></p>
       <ion-button class="login-button" expand="full" type="submit">Sign Up</ion-button>
     </form>
+    
     
   </div>
   <div *ngIf="screen == 'forget'">
