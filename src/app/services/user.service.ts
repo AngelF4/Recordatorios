@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from '@angular/fire/auth';
-import { Recordatorio } from '../interfaces/recordatorio';
-import { collection, addDoc  } from 'firebase/firestore';
-import { Firestore } from '@angular/fire/firestore';
 
 
 @Injectable({
@@ -10,9 +7,7 @@ import { Firestore } from '@angular/fire/firestore';
 })
 export class UserService {
 
-  constructor(private auth: Auth,
-              private firestore: Firestore
-  ) { }
+  constructor(private auth: Auth) { }
 
   register({email, password}: any){
     return createUserWithEmailAndPassword(this.auth, email, password);
@@ -22,8 +17,4 @@ export class UserService {
     return signInWithEmailAndPassword(this.auth,email,password)
   }
 
-  addRecordatorio(recordatorio: Recordatorio){
-      const recordatorioRef = collection(this.firestore, 'Recordatorio');
-      return addDoc(recordatorioRef, recordatorio);
-  }
 }

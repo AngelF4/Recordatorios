@@ -42,13 +42,13 @@ export class LoginPage implements OnInit {
           this.router.navigate(['/login']);
           this.screen = 'signin'
         })
-        .catch(error => console.log(error));
+        .catch(error => { this.userService.presentToast('No cumple los requisitos, intente nuevamente '); });
     else if(this.screen =="signin")
       this.userService.login(formData)
         .then(response => {
           console.log(response);
           this.router.navigate(['/home']);
         })
-        .catch(error => console.log(error));  
+        .catch(error => { this.userService.presentToast('Email o Contraseña equivocados, intente nuevamente'); });  
   }
 }
