@@ -44,7 +44,7 @@
   </ng-template>
 </ion-popover>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" >
   <div *ngIf="segmentValue == 'lista'">
     <ion-header collapse="condense" mode="ios">
       <ion-toolbar>
@@ -69,10 +69,10 @@
           </ion-label>
         </ion-item>
         <ion-item-options side="start">
-          <ion-item-option color="caffe" expandable id="terminarBtn">Opcion</ion-item-option>
+          <ion-item-option color="caffe" expandable id="terminarBtn" >Opcion</ion-item-option>
         </ion-item-options>
         <ion-item-options side="end">
-          <ion-item-option color="gris" id="editarBtn">Detalles</ion-item-option>
+          <ion-item-option color="gris" id="editarBtn" expand="block">Detalles</ion-item-option>
           <ion-item-option color="borrar" expandable id="eliminarBtn">
             Eliminar
           </ion-item-option>
@@ -110,6 +110,42 @@
       </ion-item-sliding>
     </ion-list>
   </div>
+  <ion-modal #modal trigger="editarBtn" [presentingElement]="presentingElement" color="light">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Detalles</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="modal.dismiss()">Listo</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content color="light">
+        <ion-list [inset]="true">
+          <ion-item>
+            <ion-input aria-label="Task name" placeholder="Titulo"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input placeholder="Notas"></ion-input>
+          </ion-item>
+        </ion-list>
+
+        <ion-list [inset]="true">
+          <ion-item>
+            <ion-toggle justify="space-between" color="success">
+              Fecha
+            </ion-toggle>
+          </ion-item>
+          <ion-item>
+            <ion-toggle justify="space-between" color="success">
+              Hora
+            </ion-toggle>
+          </ion-item>
+        </ion-list>
+        
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>
 
 <ion-footer [translucent]="true">
