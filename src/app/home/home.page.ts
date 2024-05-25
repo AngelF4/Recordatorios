@@ -70,6 +70,11 @@ export class HomePage {
     this.router.navigate(['/login']);
   }
 
+  submitAndDismiss() {
+    this.onSubmit();
+    this.dismissModal();
+  }
+
   dismissModal() {
     this.modalCtrl.dismiss();
   }

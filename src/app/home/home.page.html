@@ -59,7 +59,7 @@
         <ion-item class="recordatorioItem">
           <ion-label>
           <ion-checkbox labelPlacement="end" justify="start" mode="ios">{{recordatorio.title}}</ion-checkbox>
-          <p id="details">{{recordatorio.notes}} <br> {{ recordatorio.date.toDate() | date: 'yyyy-MM-ddTHH:mm:ssZ' }}</p>  
+          <p id="details">{{recordatorio.notes}} </p><p> {{ recordatorio.date.toDate() | date: 'yyyy-MM-ddTHH:mm:ssZ' }}</p>  
           </ion-label>
 
 
@@ -82,6 +82,42 @@
       
     </ion-list>
     
+
+    <ion-modal #modal trigger="editarBtn" [presentingElement]="presentingElement" >
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Detalles</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="modal.dismiss()">Listo</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content color="light">
+          <ion-list [inset]="true">
+            <ion-item>
+              <ion-input aria-label="Task name" placeholder="Titulo"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input placeholder="Notas"></ion-input>
+            </ion-item>
+          </ion-list>
+  
+          <ion-list [inset]="true">
+            <ion-item>
+              <ion-toggle justify="space-between" color="success">
+                Fecha
+              </ion-toggle>
+            </ion-item>
+            <ion-item>
+              <ion-toggle justify="space-between" color="success">
+                Hora
+              </ion-toggle>
+            </ion-item>
+          </ion-list>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
 
 
   </div>
@@ -111,80 +147,46 @@
       </ion-item-sliding>
     </ion-list>
   </div>
-  <ion-modal #modal trigger="editarBtn" [presentingElement]="presentingElement" >
-    <ng-template>
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>Detalles</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="modal.dismiss()">Listo</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content color="light">
-        <ion-list [inset]="true">
-          <ion-item>
-            <ion-input aria-label="Task name" placeholder="Titulo"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input placeholder="Notas"></ion-input>
-          </ion-item>
-        </ion-list>
 
-        <ion-list [inset]="true">
-          <ion-item>
-            <ion-toggle justify="space-between" color="success">
-              Fecha
-            </ion-toggle>
-          </ion-item>
-          <ion-item>
-            <ion-toggle justify="space-between" color="success">
-              Hora
-            </ion-toggle>
-          </ion-item>
-        </ion-list>
-      </ion-content>
-    </ng-template>
-  </ion-modal>
 
   <ion-modal #modal trigger="nuevo" [presentingElement]="presentingElement" >
     <ng-template>
       <ion-header>
-
         <ion-toolbar>
-          <ion-title>Nuevo Recordatiorio</ion-title>
+          <ion-buttons slot="start">
+            <ion-button (click)="dismissModal()" color="danger">Cancelar</ion-button>
+          </ion-buttons>
+          <ion-title>Nuevo</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="dismissModal()">Listo</ion-button>
+            <ion-button (click)="submitAndDismiss()">Listo</ion-button>
           </ion-buttons>
         </ion-toolbar>
 
       </ion-header>
       <ion-content color="light">
-
           <form (ngSubmit)="onSubmit()">
+            <ion-list [inset]="true">
+              <ion-item>
+                <ion-input [(ngModel)]="title" name="title" aria-label="Task name" placeholder="Titulo"></ion-input>
+              </ion-item>
+  
+              <ion-item>
+                <ion-input [(ngModel)]="notes" name="notes" placeholder="Notas"></ion-input>
+              </ion-item>
+            </ion-list>
 
-            <ion-item>
-              <ion-input [(ngModel)]="title" name="title" aria-label="Task name" placeholder="Titulo"></ion-input>
-            </ion-item>
-
-            <ion-item>
-              <ion-input [(ngModel)]="notes" name="notes" placeholder="Notas"></ion-input>
-            </ion-item>
-
-            <ion-item>
-              <ion-datetime [value]="date" [min]="date" max="2224-05-31T23:59:59"[(ngModel)]="date" name="date">
-                <ion-buttons slot="buttons">
-                  <ion-button color="danger" (click)="dismissModal()">Cerrar</ion-button>
-                  <ion-button type="submit" (ngSubmit)="onSubmit()" color="primary" (click)="dismissModal()">Agregar </ion-button>
-                </ion-buttons> 
-              </ion-datetime>
-            </ion-item>
+            <ion-list [inset]="true" id="fechaModal1">
+              <ion-item>
+                <ion-datetime [value]="date" [min]="date" max="2224-05-31T23:59:59"[(ngModel)]="date" name="date">
+                </ion-datetime>
+              </ion-item>
+            </ion-list>
           </form>
-
       </ion-content>
     </ng-template>
   </ion-modal>
 </ion-content>
+
 
 <ion-footer [translucent]="true">
   <ion-toolbar>
