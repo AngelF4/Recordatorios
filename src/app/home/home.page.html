@@ -129,10 +129,10 @@
     </ion-header>
     <ion-datetime presentation="date"></ion-datetime>
     <ion-list [inset]="true">
-      <ion-item-sliding *ngFor="let item of repeatArray; let i = index">
+      <ion-item-sliding *ngFor="let recordatorio of recordatorios">
+        
         <ion-item>
-          <ion-checkbox slot="start" aria-label="Toggle task completion"></ion-checkbox>
-          <ion-input aria-label="Task name" value="recordario {{i + 1}}"></ion-input>
+          <ion-checkbox slot="start" aria-label="Toggle task completion" labelPlacement="end" justify="start" mode="ios" >{{recordatorio.title}}</ion-checkbox>
         </ion-item>
 
         <ion-item-options side="start">
