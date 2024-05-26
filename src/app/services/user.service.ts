@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, User } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, User, sendPasswordResetEmail} from '@angular/fire/auth';
 import { Recordatorio } from '../interfaces/recordatorio';
 import { collection, addDoc, query, orderBy, doc, deleteDoc, setDoc, CollectionReference } from 'firebase/firestore';
 import { Firestore, collectionData } from '@angular/fire/firestore';
@@ -27,6 +27,16 @@ this.currentUser = user;
                                                       position: 'bottom',
                                                     });
     await toast.present();
+  }
+
+  async resetPassword(email: string) {
+    try {
+      await sendPasswordResetEmail(this.auth, email);
+      return 'Se ha enviado un correo electrónico para restablecer la contraseña.';
+    } catch (error) {
+      console.error('Error al enviar el correo electrónico para restablecer la contraseña:', error);
+      throw error;
+    }
   }
 
   async register({ name, email, password, user_image }: any) {
@@ -67,6 +77,21 @@ this.currentUser = user;
       const recordatorioRef = collection(this.firestore, `Usuarios/${this.currentUser.uid}/Recordatorios`) as CollectionReference<Recordatorio>; 
       const orderedRecordatorioQuery = query(recordatorioRef, orderBy('date'));
       return collectionData(orderedRecordatorioQuery, { idField: 'id' }) as Observable<Recordatorio[]>;
+    } else {
+      throw new Error('User not authenticated');
+    }
+  }
+
+  async editRecordatorio(recordatorio: Recordatorio) {
+    if (this.currentUser) {
+      try {
+        const recordatorioDocRef = doc(this.firestore, `Usuarios/${this.currentUser.uid}/Recordatorios/${recordatorio.id}`); 
+        await setDoc(recordatorioDocRef, recordatorio);
+        return "Registro editado correctamente";
+      } catch (error) {
+        console.error("Error al editar el registro:", error);
+        return "Error al editar el registro";
+      }
     } else {
       throw new Error('User not authenticated');
     }

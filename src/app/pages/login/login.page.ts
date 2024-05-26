@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
-import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
-
 
 @Component({
   selector: 'app-login',
@@ -28,33 +25,40 @@ export class LoginPage implements OnInit {
     this.screen = event;
   }
 
-  onSubmit() {
+  async onSubmit() {
     const formData = {
-      name: this.name, // Añadir name
+      name: this.name, 
       email: this.email,
       password: this.password,
-      user_image: this.user_image // Añadir user_image
+      user_image: this.user_image 
     };
 
-    if (this.screen === "signup") {
-      this.userService.register(formData)
-        .then(response => {
-          console.log(response);
-          this.router.navigate(['/login']);
-          this.screen = 'signin';
-        })
-        .catch(error => {
-          this.userService.presentToast('No cumple los requisitos, intente nuevamente');
-        });
-    } else if (this.screen === "signin") {
-      this.userService.login(formData)
-        .then(response => {
-          console.log(response);
-          this.router.navigate(['/home']);
-        })
-        .catch(error => {
-          this.userService.presentToast('Email o Contraseña equivocados, intente nuevamente');
-        });
+    if (this.screen === 'signup') {
+      try {
+        await this.userService.register(formData);
+        this.router.navigate(['/login']);
+        this.screen = 'signin';
+      } catch (error) {
+        this.userService.presentToast('No cumple los requisitos, intente nuevamente');
+      }
+    } else if (this.screen === 'signin') {
+      try {
+        await this.userService.login(formData);
+        this.router.navigate(['/home']);
+      } catch (error) {
+        this.userService.presentToast('Email o Contraseña equivocados, intente nuevamente');
+      }
+    }
+    else if (this.screen === 'forget') {
+      try {
+        await this.userService.resetPassword(this.email);
+        this.userService.presentToast('Se ha enviado un correo electrónico para restablecer la contraseña.');
+        this.router.navigate(['/login']);
+        this.screen = 'signin';
+      } catch (error) {
+        this.userService.presentToast('Error al enviar el correo electrónico para restablecer la contraseña.');
+      }
     }
   }
+
 }

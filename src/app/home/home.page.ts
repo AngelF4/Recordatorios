@@ -5,8 +5,10 @@ import { CheckboxCustomEvent } from '@ionic/angular';
 import { UserService } from 'src/app/services/user.service';
 import { Timestamp } from 'firebase/firestore';
 import { ModalController } from '@ionic/angular';
-import { Recordatorio } from '../interfaces/recordatorio';
+import { Recordatorio, HighlightedDate } from '../interfaces/recordatorio';
 import { RecordatorioComponentComponent } from '../pages/recordatorio-component/recordatorio-component.component';
+import { consumerMarkDirty } from '@angular/core/primitives/signals';
+
 
 @Component({
   selector: 'app-home',
@@ -19,7 +21,7 @@ export class HomePage {
   notes: string = '';
   date: string = new Date().toISOString();
   recordatorios: Recordatorio[]=[];
-  
+  highlightedDates: HighlightedDate[] = [];
   repeatArray = Array(15).fill(0)
   
   constructor(
@@ -39,6 +41,14 @@ export class HomePage {
     this.user.getRecordatorios().subscribe(recordatorios => {
       console.log(recordatorios);
       this.recordatorios = recordatorios;
+      this.highlightedDates = recordatorios.map(recordatorio => {
+        return {
+          date: recordatorio.date.toDate().toISOString(),
+          textColor: 'red',
+          backgroundColor: 'red'
+        };
+      });
+      console.log(this.highlightedDates)
     });
   }
 

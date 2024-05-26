@@ -7,7 +7,7 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./recordatorio-component.component.scss'],
 })
 export class RecordatorioComponentComponent  implements OnInit {
-
+  showDateTime: boolean = false;
   constructor(private modalController: ModalController) { }
 
   ngOnInit() {}
@@ -15,4 +15,9 @@ export class RecordatorioComponentComponent  implements OnInit {
   cerrarModal() {
     this.modalController.dismiss();
   }
+
+  toggleDateTime(event: CustomEvent) {
+    this.showDateTime = event.detail.checked;
+  }
+
 }

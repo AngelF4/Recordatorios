@@ -10,7 +10,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content collor="light">
+<ion-content color="light">
   <ion-list [inset]="true">
     <ion-item>
       <ion-input aria-label="Task name" placeholder="Titulo"></ion-input>
@@ -22,14 +22,12 @@
 
   <ion-list [inset]="true">
     <ion-item>
-      <ion-toggle justify="space-between" color="success">
-        Fecha
+      <ion-toggle color="success" (ionChange)="toggleDateTime($event)">
+        Fecha y Hora
       </ion-toggle>
     </ion-item>
-    <ion-item>
-      <ion-toggle justify="space-between" color="success">
-        Hora
-      </ion-toggle>
+    <ion-item *ngIf="showDateTime">
+      <ion-datetime display-format="DD/MM/YYYY HH:mm" placeholder="Selecciona fecha y hora"></ion-datetime>
     </ion-item>
     <ion-item>
       <ion-toggle justify="space-between" color="success">

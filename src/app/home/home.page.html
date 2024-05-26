@@ -12,7 +12,7 @@
       <ion-segment-button value="lista">
         <ion-label>Lista</ion-label>
       </ion-segment-button>
-      <ion-segment-button value="calendario">
+      <ion-segment-button value="calendario" (ionChange)="segmentChanged($event)">
         <ion-label>Calendario</ion-label>
       </ion-segment-button>
     </ion-segment>
@@ -79,16 +79,20 @@
       
     </ion-list>
     
-
-
   </div>
+
+
   <div *ngIf="segmentValue == 'calendario'">
     <ion-header collapse="condense" mode="ios">
       <ion-toolbar>
         <ion-title size="large" color="naranja">Calendario</ion-title>
       </ion-toolbar>
     </ion-header>
-    <ion-datetime presentation="date"></ion-datetime>
+
+
+    <ion-datetime presentation="date" [highlightedDates]="highlightedDates"></ion-datetime> 
+
+
     <ion-list [inset]="true">
       <ion-item-sliding *ngFor="let recordatorio of recordatorios">
         
