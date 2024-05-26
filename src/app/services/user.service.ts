@@ -81,6 +81,21 @@ this.currentUser = user;
       throw new Error('User not authenticated');
     }
   }
+
+  async editRecordatorio(recordatorio: Recordatorio) {
+    if (this.currentUser) {
+      try {
+        const recordatorioDocRef = doc(this.firestore, `Usuarios/${this.currentUser.uid}/Recordatorios/${recordatorio.id}`); 
+        await setDoc(recordatorioDocRef, recordatorio);
+        return "Registro editado correctamente";
+      } catch (error) {
+        console.error("Error al editar el registro:", error);
+        return "Error al editar el registro";
+      }
+    } else {
+      throw new Error('User not authenticated');
+    }
+  }
   
   async deleteRecordatorio(recordatorio: Recordatorio) {
     if (this.currentUser) {
