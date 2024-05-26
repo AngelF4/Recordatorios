@@ -54,7 +54,7 @@
           <ion-label>
             <ion-checkbox labelPlacement="end" justify="start" mode="ios">{{recordatorio.title}}</ion-checkbox>
             <p id="details">{{recordatorio.notes}}</p>
-            <p>{{ recordatorio.date.toDate() | date: 'yyyy-MM-dd HH:mm' }}</p> 
+            <p id="fecha">{{ recordatorio.date.toDate() | date: 'dd-MM-yy,  HH:mm' }}</p> 
           </ion-label>
         </ion-item>
         <ion-item-options side="start">
@@ -76,20 +76,22 @@
       </ion-toolbar>
     </ion-header>
 
-    <ion-datetime presentation="date" [highlightedDates]="highlightedDates" color="naranja"></ion-datetime>
+    <ion-datetime presentation="date" [highlightedDates]="highlightedDates" color="naranja" picker-format=" dd-MM-yy"
+    [(ngModel)]="selectedDate" (ionChange)="onDateChange($event)"></ion-datetime>
 
-    <ion-list [inset]="true">
+    <ion-list mode="ios" [inset]="true">
       <ion-item-sliding *ngFor="let recordatorio of recordatorios">
-        <ion-item (click)="openEditModal(recordatorio)">
-          <ion-checkbox slot="start" aria-label="Toggle task completion" labelPlacement="end" justify="start" mode="ios">
-            {{recordatorio.title}}
-          </ion-checkbox>
+        <ion-item class="recordatorioItem" (click)="openEditModal(recordatorio)" *ngIf="isSameDate(recordatorio.date.toDate().toISOString(), selectedDate)">
+          <ion-label>
+            <ion-checkbox labelPlacement="end" justify="start" mode="ios">{{recordatorio.title}}</ion-checkbox>
+            <p id="details">{{recordatorio.notes}}</p>
+            <p id="fecha">{{ recordatorio.date.toDate() | date: 'dd-MM-yy, HH:mm' }}</p> 
+          </ion-label>
         </ion-item>
-
         <ion-item-options side="start">
           <ion-item-option color="primary" expandable id="terminarBtn">Completar</ion-item-option>
         </ion-item-options>
-        <ion-item-options side="end">
+        <ion-item-options side="end" *ngIf="recordatorio">
           <ion-item-option color="borrar" expandable id="eliminarBtn" (click)="onClickDelete(recordatorio)">
             Eliminar
           </ion-item-option>
@@ -107,12 +109,12 @@
           </ion-buttons>
           <ion-title allignment="center">Nuevo</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="submitAndDismissCreate()" color="primary">Listo</ion-button>
+            <ion-button (click)="submitAndDismiss()" color="primary">Listo</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
       <ion-content color="light">
-        <form>
+        <form (ngSubmit)="onSubmit()">
           <ion-list [inset]="true">
             <ion-item>
               <ion-input [(ngModel)]="title" name="title" aria-label="Task name" placeholder="Titulo"></ion-input>

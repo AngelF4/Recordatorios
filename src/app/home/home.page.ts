@@ -5,7 +5,13 @@ import { Router } from '@angular/router';
 import { CheckboxCustomEvent } from '@ionic/angular';
 import { UserService } from 'src/app/services/user.service';
 import { ModalController } from '@ionic/angular';
-import { Recordatorio, HighlightedDate } from '../interfaces/recordatorio';
+import { Recordatorio } from '../interfaces/recordatorio';
+
+export interface HighlightedDate {
+  date: string;
+  textColor: string;
+  backgroundColor: string;
+}
 
 @Component({
   selector: 'app-home',
@@ -20,8 +26,14 @@ export class HomePage {
   showDateTime: boolean = false;
   recordatorios: Recordatorio[] = [];
   highlightedDates: HighlightedDate[] = [];
-  selectedRecordatorio: Recordatorio | null = null; 
+  selectedRecordatorio: Recordatorio | null = null;
   repeatArray = Array(15).fill(0);
+  selectedDate: string = new Date().toISOString();
+  canDismiss = false;
+  presentingElement: any;
+  segmentValue: String = 'lista';
+  isOpen = false;
+  isModalOpen = false;
 
   constructor(
     private router: Router,
@@ -30,27 +42,37 @@ export class HomePage {
     private modalCtrl: ModalController
   ) {}
 
-  canDismiss = false;
-  presentingElement: any;
-  segmentValue: String = 'lista';
-  isOpen = false;
-  isModalOpen = false;
-
   ngOnInit() {
     this.presentingElement = document.querySelector('ion-content');
     this.user.getRecordatorios().subscribe((recordatorios) => {
       console.log(recordatorios);
       this.recordatorios = recordatorios;
       this.highlightedDates = recordatorios.map((recordatorio) => {
-        const dateWithoutTime = recordatorio.date.toDate().toISOString().split('T')[0];
+        const localDate = this.formatDateToLocal(recordatorio.date.toDate());
         return {
-          date: dateWithoutTime,
+          date: localDate,
           textColor: 'black',
           backgroundColor: 'grey',
         };
       });
       console.log(this.highlightedDates);
     });
+  }
+
+  formatDateToLocal(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  formatDateString(date: string | Date): string {
+    const options: Intl.DateTimeFormatOptions = {
+      day: '2-digit',
+      month: '2-digit',
+      year: '2-digit',
+    };
+    return new Date(date).toLocaleDateString('es-ES', options);
   }
 
   segmentChanged(event: any) {
@@ -111,13 +133,13 @@ export class HomePage {
   }
 
   async onCreateRecordatorio() {
-    const dateTimestamp = Timestamp.fromDate(new Date(this.date)); 
+    const dateTimestamp = Timestamp.fromDate(new Date(this.date));
     const formData = {
       title: this.title,
       notes: this.notes,
-      date: dateTimestamp 
+      date: dateTimestamp,
     };
-  
+
     console.log(formData);
     const response = await this.user.addRecordatorio(formData);
     console.log(response);
@@ -141,11 +163,19 @@ export class HomePage {
     this.title = recordatorio.title;
     this.notes = recordatorio.notes;
     this.date = recordatorio.date.toDate().toISOString();
-    this.showDateTime = false; 
+    this.showDateTime = false;
     this.setOpen(true);
   }
 
   onDateChange(event: CustomEvent) {
-    this.date = event.detail.value;
+    console.log("Fecha seleccionada:", event.detail.value); // Verifica que la fecha seleccionada esté cambiando
+    this.selectedDate = event.detail.value; // Asegurarse de actualizar selectedDate
+  }
+
+  isSameDate(date1: string, date2: string): boolean {
+    const formattedDate1 = this.formatDateString(date1);
+    const formattedDate2 = this.formatDateString(date2);
+    console.log(`Comparando ${formattedDate1} con ${formattedDate2}`);
+    return formattedDate1 === formattedDate2;
   }
 }
