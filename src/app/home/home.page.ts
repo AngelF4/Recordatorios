@@ -6,7 +6,6 @@ import { CheckboxCustomEvent } from '@ionic/angular';
 import { UserService } from 'src/app/services/user.service';
 import { ModalController } from '@ionic/angular';
 import { Recordatorio, HighlightedDate } from '../interfaces/recordatorio';
-import { consumerMarkDirty } from '@angular/core/primitives/signals';
 
 @Component({
   selector: 'app-home',
@@ -43,10 +42,11 @@ export class HomePage {
       console.log(recordatorios);
       this.recordatorios = recordatorios;
       this.highlightedDates = recordatorios.map((recordatorio) => {
+        const dateWithoutTime = recordatorio.date.toDate().toISOString().split('T')[0];
         return {
-          date: recordatorio.date.toDate().toISOString(),
+          date: dateWithoutTime,
           textColor: 'red',
-          backgroundColor: 'red',
+          backgroundColor: 'yellow',
         };
       });
       console.log(this.highlightedDates);
