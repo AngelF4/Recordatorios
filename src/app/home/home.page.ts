@@ -6,6 +6,7 @@ import { UserService } from 'src/app/services/user.service';
 import { Timestamp } from 'firebase/firestore';
 import { ModalController } from '@ionic/angular';
 import { Recordatorio } from '../interfaces/recordatorio';
+import { RecordatorioComponentComponent } from '../pages/recordatorio-component/recordatorio-component.component';
 
 @Component({
   selector: 'app-home',
@@ -96,6 +97,16 @@ export class HomePage {
   async onClcikDelete(recordatorio: Recordatorio){
     const response = await this.user.deleteRecordatorio(recordatorio);
     console.log('Respuesta de eliminación:', response);
+  }
+
+
+
+
+  async abrirModalReco() {
+    const modal = await this.modalCtrl.create({
+      component: RecordatorioComponentComponent
+    });
+    return await modal.present();
   }
 
 }
