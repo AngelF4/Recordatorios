@@ -133,11 +133,27 @@
                 <ion-input [(ngModel)]="notes" name="notes" placeholder="Notas"></ion-input>
               </ion-item>
             </ion-list>
+            
+            
 
             <ion-list [inset]="true" id="fechaModal1">
               <ion-item>
                 <ion-datetime [value]="date" [min]="date" max="2224-05-31T23:59:59"[(ngModel)]="date" name="date">
                 </ion-datetime>
+               
+                
+              </ion-item>
+            </ion-list>
+            <ion-list [inset]="true">
+              <ion-item>
+                <ion-toggle justify="space-between" color="success">
+                  Todo el dia
+                </ion-toggle>
+              </ion-item>
+              <ion-item>
+                <ion-toggle justify="space-between" color="success">
+                  Recordatorio diario
+                </ion-toggle>
               </ion-item>
             </ion-list>
           </form>
