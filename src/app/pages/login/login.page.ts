@@ -14,41 +14,47 @@ export class LoginPage implements OnInit {
   screen: any = 'signin';
   email: string = '';
   password: string = '';
- 
+  name: string = ''; // Añadir campo name
+  user_image: string = ''; // Añadir campo user_image
 
   constructor(
     private userService: UserService,
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  change(event: any){
+  change(event: any) {
     this.screen = event;
   }
 
   onSubmit() {
     const formData = {
+      name: this.name, // Añadir name
       email: this.email,
-      password: this.password
+      password: this.password,
+      user_image: this.user_image // Añadir user_image
     };
 
-
-    if(this.screen == "signup")
+    if (this.screen === "signup") {
       this.userService.register(formData)
         .then(response => {
           console.log(response);
           this.router.navigate(['/login']);
-          this.screen = 'signin'
+          this.screen = 'signin';
         })
-        .catch(error => { this.userService.presentToast('No cumple los requisitos, intente nuevamente '); });
-    else if(this.screen =="signin")
+        .catch(error => {
+          this.userService.presentToast('No cumple los requisitos, intente nuevamente');
+        });
+    } else if (this.screen === "signin") {
       this.userService.login(formData)
         .then(response => {
           console.log(response);
           this.router.navigate(['/home']);
         })
-        .catch(error => { this.userService.presentToast('Email o Contraseña equivocados, intente nuevamente'); });  
+        .catch(error => {
+          this.userService.presentToast('Email o Contraseña equivocados, intente nuevamente');
+        });
+    }
   }
 }
