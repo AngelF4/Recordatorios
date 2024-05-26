@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, User } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, User, sendPasswordResetEmail} from '@angular/fire/auth';
 import { Recordatorio } from '../interfaces/recordatorio';
 import { collection, addDoc, query, orderBy, doc, deleteDoc, setDoc, CollectionReference } from 'firebase/firestore';
 import { Firestore, collectionData } from '@angular/fire/firestore';
@@ -27,6 +27,16 @@ this.currentUser = user;
                                                       position: 'bottom',
                                                     });
     await toast.present();
+  }
+
+  async resetPassword(email: string) {
+    try {
+      await sendPasswordResetEmail(this.auth, email);
+      return 'Se ha enviado un correo electrónico para restablecer la contraseña.';
+    } catch (error) {
+      console.error('Error al enviar el correo electrónico para restablecer la contraseña:', error);
+      throw error;
+    }
   }
 
   async register({ name, email, password, user_image }: any) {

@@ -71,13 +71,15 @@
       </ion-toolbar>
       <div class="para">Ingresa un Email para cambiar</div>
     </ion-header>
-    <ion-item lines="none" class="ion-item">
-      <fieldset class="input-item">
-        <legend>Email</legend>
-        <ion-input type="email" placeholder="name@domain.com"></ion-input>
-      </fieldset>
-    </ion-item>
+    <form (ngSubmit)="onSubmit()">
+      <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+          <legend>Email</legend>
+          <ion-input type="email" [(ngModel)]="email" name="email" placeholder="name@domain.com"></ion-input>
+        </fieldset>
+      </ion-item>
     <p class="signup-text">Ya la recordaste&nbsp;<a (click)="change('signin')">Sign In?</a></p>
-    <ion-button class="login-button" expand="block">Reset Password</ion-button>
+    <ion-button class="login-button" expand="block" type="submit">Reset Password</ion-button>
+  </form>
   </div>
 </ion-content>
