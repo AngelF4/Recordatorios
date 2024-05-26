@@ -14,8 +14,8 @@ export class LoginPage implements OnInit {
   screen: any = 'signin';
   email: string = '';
   password: string = '';
-  name: string = ''; // Añadir campo name
-  user_image: string = ''; // Añadir campo user_image
+  name: string = '';
+  user_image: string = ''; 
 
   constructor(
     private userService: UserService,
