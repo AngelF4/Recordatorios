@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { ActionSheetController } from '@ionic/angular';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
   selector: 'app-config',
@@ -7,7 +10,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConfigPage implements OnInit {
 
-  constructor() { }
+  imageUrl: string | null = null;
+  presentingElement: any;
+  constructor(private modalCtrl: ModalController,
+              private actionSheetCtrl: ActionSheetController
+  ) { }
 
   paletteToggle = false;
 
@@ -41,4 +48,54 @@ export class ConfigPage implements OnInit {
     console.log('Toggling Dark Palette:', shouldAdd);
     document.documentElement.classList.toggle('ion-palette-dark', shouldAdd);
   }
+
+
+
+
+
+
+
+
+    dismissModal() {
+      this.modalCtrl.dismiss();
+    }
+
+
+
+
+    async replaceImage() {
+      const actionSheet = await this.actionSheetCtrl.create({
+        header: 'Select Image Source',
+        buttons: [
+          {
+            text: 'Load from Library',
+            handler: () => {
+              this.pickImage(CameraSource.Photos);
+            },
+          },
+          {
+            text: 'Use Camera',
+            handler: () => {
+              this.pickImage(CameraSource.Camera);
+            },
+          },
+          {
+            text: 'Cancel',
+            role: 'cancel',
+          },
+        ],
+      });
+      await actionSheet.present();
+    }
+  
+    async pickImage(source: CameraSource) {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.Uri,
+        source,
+      });
+  
+      this.imageUrl = image.webPath || null;
+    }
 }

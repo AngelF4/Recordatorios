@@ -26,21 +26,21 @@
       <ion-list-header>Perfil</ion-list-header>
       <ion-list [inset]="true">
         <ion-item [button]="true">
-          <ion-label>Cambiar usuario</ion-label>
+          <ion-label id="UserUp">Cambiar usuario</ion-label>
           <ion-note>'Usuario'</ion-note>
         </ion-item>
         <ion-item [button]="true">
-          <ion-label>Cambiar foto de perfil</ion-label>
+          <ion-label id="PfpUp">Cambiar foto de perfil</ion-label>
         </ion-item>
       </ion-list>
 
   <ion-list-header>Cuenta</ion-list-header>
   <ion-list [inset]="true">
     <ion-item [button]="true">
-      <ion-label>Cambiar correo 📧</ion-label>
+      <ion-label id="CorreoUp">Cambiar correo 📧</ion-label>
     </ion-item>
     <ion-item [button]="true">
-      <ion-label>Cambiar contraseña 🔑</ion-label>
+      <ion-label id="ContraseñaUp">Cambiar contraseña 🔑</ion-label>
     </ion-item>
   </ion-list>
 
@@ -57,5 +57,98 @@
      Lenguajes modernos de programacion ®️</ion-note>
   <br>
     <ion-note class="ion-margin-horizontal">Version 0.2 alpha</ion-note>
+
+
+      <!--Area de pestanas para update-->
+    
+      <ion-modal #modal trigger="UserUp" [presentingElement]="presentingElement">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-button (click)="dismissModal()" color="danger">Cancelar</ion-button>
+              </ion-buttons>
+              <ion-title allignment="center">User</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="dismissModal()" color="primary">Listo</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="Content">
+            <ion-input label="Usuario:" labelPlacement="stacked" fill="outline" placeholder="Enter text"></ion-input>
+            <ion-button allignment="center">Cambiar Usuario</ion-button>
+          </ion-content>
+        </ng-template>
+        
+      </ion-modal>
+      <ion-modal #modal trigger="PfpUp" [presentingElement]="presentingElement">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-button (click)="dismissModal()" color="danger">Cancelar</ion-button>
+              </ion-buttons>
+              <ion-title allignment="center">Foto de perfil</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="dismissModal()" color="primary">Listo</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="Content">
+            <div class="circle-image" (click)="replaceImage()">
+              <ng-container *ngIf="imageUrl; else defaultIcon">
+                <img [src]="imageUrl" alt="Circular Image">
+              </ng-container>
+              <ng-template #defaultIcon>
+                <ion-icon name="person-circle-outline" class="default-icon"></ion-icon>
+              </ng-template>
+            </div>
+          </ion-content>
+        </ng-template>
+        
+      </ion-modal>
+
+
+      <ion-modal #modal trigger="CorreoUp" [presentingElement]="presentingElement">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-button (click)="dismissModal()" color="danger">Cancelar</ion-button>
+              </ion-buttons>
+              <ion-title allignment="center">Correo</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="dismissModal()" color="primary">Listo</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="Content">
+            <ion-input label="Correo:" labelPlacement="stacked" fill="outline" placeholder="Enter text"></ion-input>
+            <ion-button allignment="center">Cambiar Correo</ion-button>
+          </ion-content>
+        </ng-template>
+        
+      </ion-modal>
+
+      <ion-modal #modal trigger="ContraseñaUp" [presentingElement]="presentingElement">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-button (click)="dismissModal()" color="danger">Cancelar</ion-button>
+              </ion-buttons>
+              <ion-title allignment="center">Contraseña</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="dismissModal()" color="primary">Listo</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="Content">
+            <ion-input label="Contraseña:" labelPlacement="stacked" fill="outline" placeholder="Enter text"></ion-input>
+            <ion-button allignment="center">Cambiar Contraseña</ion-button>
+          </ion-content>
+        </ng-template>
+        
+      </ion-modal>
   
 </ion-content>
