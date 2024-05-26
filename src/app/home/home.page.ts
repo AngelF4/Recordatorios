@@ -6,7 +6,6 @@ import { UserService } from 'src/app/services/user.service';
 import { Timestamp } from 'firebase/firestore';
 import { ModalController } from '@ionic/angular';
 import { Recordatorio, HighlightedDate } from '../interfaces/recordatorio';
-import { RecordatorioComponentComponent } from '../pages/recordatorio-component/recordatorio-component.component';
 import { consumerMarkDirty } from '@angular/core/primitives/signals';
 
 
@@ -20,6 +19,7 @@ export class HomePage {
   title: string = '';
   notes: string = '';
   date: string = new Date().toISOString();
+  showDateTime: boolean = false;
   recordatorios: Recordatorio[]=[];
   highlightedDates: HighlightedDate[] = [];
   repeatArray = Array(15).fill(0)
@@ -80,6 +80,7 @@ export class HomePage {
   submitAndDismiss() {
     this.onSubmit();
     this.dismissModal();
+    this.setOpen(false);
   }
 
   dismissModal() {
@@ -103,12 +104,14 @@ export class HomePage {
     const response = await this.user.deleteRecordatorio(recordatorio);
     console.log('Respuesta de eliminación:', response);
   }
+  isModalOpen = false;
 
-  async abrirModalReco() {
-    const modal = await this.modalCtrl.create({
-      component: RecordatorioComponentComponent
-    });
-    return await modal.present();
+  setOpen(isOpen: boolean) {
+    this.isModalOpen = isOpen;
+  }
+
+  toggleDateTime(event: CustomEvent) {
+    this.showDateTime = event.detail.checked;
   }
 
 }
