@@ -11,7 +11,7 @@ export interface HighlightedDate {
   date: string;
   textColor: string;
   backgroundColor: string;
-}
+} 
 
 @Component({
   selector: 'app-home',
@@ -113,18 +113,19 @@ export class HomePage {
 
   async onSubmit() {
     const dateTimestamp = this.showDateTime ? Timestamp.fromDate(new Date(this.date)) : this.selectedRecordatorio?.date;
+    console.log("Fecha enviada en el formulario:", this.date);  // Log para verificar la fecha antes de enviar
     if (!dateTimestamp) {
       console.error('Fecha no válida');
       return;
     }
-
+  
     const formData: Recordatorio = {
       id: this.selectedRecordatorio?.id,
       title: this.title,
       notes: this.notes,
       date: dateTimestamp,
     };
-
+  
     console.log(formData);
     const response = this.selectedRecordatorio
       ? await this.user.editRecordatorio(formData)
@@ -163,13 +164,14 @@ export class HomePage {
     this.title = recordatorio.title;
     this.notes = recordatorio.notes;
     this.date = recordatorio.date.toDate().toISOString();
-    this.showDateTime = false;
+    console.log("Fecha asignada al modal:", this.date); 
+    this.showDateTime = true;
     this.setOpen(true);
   }
 
   onDateChange(event: CustomEvent) {
-    console.log("Fecha seleccionada:", event.detail.value); // Verifica que la fecha seleccionada esté cambiando
-    this.selectedDate = event.detail.value; // Asegurarse de actualizar selectedDate
+    console.log("Fecha seleccionada:", event.detail.value);
+    this.date = event.detail.value;
   }
 
   isSameDate(date1: string, date2: string): boolean {

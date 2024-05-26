@@ -163,7 +163,7 @@
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
-
+  
       <ion-content color="light">
         <ion-list [inset]="true">
           <ion-item>
@@ -179,7 +179,8 @@
           </ion-item>
           <ion-item *ngIf="showDateTime">
             <ion-datetime
-              [value]="date"
+              [(ngModel)]="date"
+              name="date"
               (ionChange)="onDateChange($event)"
               placeholder="Selecciona fecha y hora">
             </ion-datetime>
