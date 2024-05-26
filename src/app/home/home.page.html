@@ -76,7 +76,7 @@
       </ion-toolbar>
     </ion-header>
 
-    <ion-datetime presentation="date" [highlightedDates]="highlightedDates"></ion-datetime>
+    <ion-datetime presentation="date" [highlightedDates]="highlightedDates" color="naranja"></ion-datetime>
 
     <ion-list [inset]="true">
       <ion-item-sliding *ngFor="let recordatorio of recordatorios">
@@ -197,6 +197,7 @@
     </ng-template>
   </ion-modal>
 </ion-content>
+
   <ion-footer [translucent]="true">
     <ion-toolbar>
       <ion-buttons>

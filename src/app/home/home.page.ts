@@ -45,8 +45,8 @@ export class HomePage {
         const dateWithoutTime = recordatorio.date.toDate().toISOString().split('T')[0];
         return {
           date: dateWithoutTime,
-          textColor: 'red',
-          backgroundColor: 'yellow',
+          textColor: 'black',
+          backgroundColor: 'grey',
         };
       });
       console.log(this.highlightedDates);
