@@ -1,19 +1,24 @@
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, User } from '@angular/fire/auth';
 import { Recordatorio } from '../interfaces/recordatorio';
-import { collection, addDoc, query, orderBy, doc, deleteDoc, setDoc } from 'firebase/firestore';
+import { collection, addDoc, query, orderBy, doc, deleteDoc, setDoc, CollectionReference } from 'firebase/firestore';
 import { Firestore, collectionData } from '@angular/fire/firestore';
 import { ToastController } from '@ionic/angular';
 import { Observable } from 'rxjs';
+import { getAuth } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserService {private currentUser: User | null = null;
 
   constructor(private auth: Auth,
-              private firestore: Firestore,
-              private toastController: ToastController) { }
+    private firestore: Firestore,
+    private toastController: ToastController) {
+this.auth.onAuthStateChanged(user => {
+this.currentUser = user;
+});
+}
 
   async presentToast(message: string) {
     const toast = await this.toastController.create({
@@ -48,25 +53,37 @@ export class UserService {
     return signInWithEmailAndPassword(this.auth, email, password);
   }
 
-  addRecordatorio(recordatorio: Recordatorio) {
-    const recordatorioRef = collection(this.firestore, 'Recordatorio');
-    return addDoc(recordatorioRef, recordatorio);
+  async addRecordatorio(recordatorio: Recordatorio) {
+    if (this.currentUser) {
+      const recordatorioRef = collection(this.firestore, `Usuarios/${this.currentUser.uid}/Recordatorios`); 
+      return addDoc(recordatorioRef, recordatorio);
+    } else {
+      throw new Error('User not authenticated');
+    }
   }
-
+  
   getRecordatorios(): Observable<Recordatorio[]> {
-    const recordatorioRef = collection(this.firestore, 'Recordatorio');
-    const orderedRecordatorioQuery = query(recordatorioRef, orderBy('date'));
-    return collectionData(orderedRecordatorioQuery, { idField: 'id' }) as Observable<Recordatorio[]>;
+    if (this.currentUser) {
+      const recordatorioRef = collection(this.firestore, `Usuarios/${this.currentUser.uid}/Recordatorios`) as CollectionReference<Recordatorio>; 
+      const orderedRecordatorioQuery = query(recordatorioRef, orderBy('date'));
+      return collectionData(orderedRecordatorioQuery, { idField: 'id' }) as Observable<Recordatorio[]>;
+    } else {
+      throw new Error('User not authenticated');
+    }
   }
-
+  
   async deleteRecordatorio(recordatorio: Recordatorio) {
-    try {
-      const recordatorioDocRef = doc(this.firestore, `Recordatorio/${recordatorio.id}`);
-      await deleteDoc(recordatorioDocRef);
-      return "Registro eliminado correctamente";
-    } catch (error) {
-      console.error("Error al eliminar el registro:", error);
-      return "Error al eliminar el registro";
+    if (this.currentUser) {
+      try {
+        const recordatorioDocRef = doc(this.firestore, `Usuarios/${this.currentUser.uid}/Recordatorios/${recordatorio.id}`); 
+        await deleteDoc(recordatorioDocRef);
+        return "Registro eliminado correctamente";
+      } catch (error) {
+        console.error("Error al eliminar el registro:", error);
+        return "Error al eliminar el registro";
+      }
+    } else {
+      throw new Error('User not authenticated');
     }
   }
 }
