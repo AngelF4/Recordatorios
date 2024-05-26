@@ -20,23 +20,18 @@ export class HomePage {
   date: string = new Date().toISOString();
   recordatorios: Recordatorio[]=[];
   
-  
-
   repeatArray = Array(15).fill(0)
-  constructor(private router: Router, 
-              private popoverCtrl: PopoverController,
-              private user: UserService,
-              private modalCtrl: ModalController           
-            ) {
-
-                const now = new Date();
-                this.date = now.toISOString();
-              }
+  
+  constructor(
+    private router: Router, 
+    private popoverCtrl: PopoverController,
+    private user: UserService,
+    private modalCtrl: ModalController
+  ) {}
 
   canDismiss = false;
   presentingElement: any;
-
-  segmentValue:String = 'lista';
+  segmentValue: String = 'lista';
   isOpen = false;
 
   ngOnInit() {
@@ -44,7 +39,7 @@ export class HomePage {
     this.user.getRecordatorios().subscribe(recordatorios => {
       console.log(recordatorios);
       this.recordatorios = recordatorios;
-    })
+    });
   }
 
   onTermsChanged(event: Event) {
@@ -60,13 +55,14 @@ export class HomePage {
     this.popover.event = e;
     this.isOpen = true;
   }
-  irAConfig(){
+  
+  irAConfig() {
     this.isOpen = false;
     this.popoverCtrl.dismiss();
     this.router.navigate(['/config']);
   }
 
-  irALogin(){
+  irALogin() {
     this.popoverCtrl.dismiss();
     this.router.navigate(['/login']);
   }
@@ -81,8 +77,7 @@ export class HomePage {
   }
 
   async onSubmit() {
-    const now = new Date();
-    const dateTimestamp = Timestamp.fromDate(now);
+    const dateTimestamp = Timestamp.fromDate(new Date(this.date)); 
     const formData = {
       title: this.title,
       notes: this.notes,
@@ -98,9 +93,6 @@ export class HomePage {
     const response = await this.user.deleteRecordatorio(recordatorio);
     console.log('Respuesta de eliminación:', response);
   }
-
-
-
 
   async abrirModalReco() {
     const modal = await this.modalCtrl.create({
