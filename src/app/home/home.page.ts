@@ -1,13 +1,12 @@
+import { Timestamp } from 'firebase/firestore';
 import { Component, ViewChild } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { CheckboxCustomEvent } from '@ionic/angular';
 import { UserService } from 'src/app/services/user.service';
-import { Timestamp } from 'firebase/firestore';
 import { ModalController } from '@ionic/angular';
 import { Recordatorio, HighlightedDate } from '../interfaces/recordatorio';
 import { consumerMarkDirty } from '@angular/core/primitives/signals';
-
 
 @Component({
   selector: 'app-home',
@@ -20,12 +19,13 @@ export class HomePage {
   notes: string = '';
   date: string = new Date().toISOString();
   showDateTime: boolean = false;
-  recordatorios: Recordatorio[]=[];
+  recordatorios: Recordatorio[] = [];
   highlightedDates: HighlightedDate[] = [];
-  repeatArray = Array(15).fill(0)
-  
+  selectedRecordatorio: Recordatorio | null = null; 
+  repeatArray = Array(15).fill(0);
+
   constructor(
-    private router: Router, 
+    private router: Router,
     private popoverCtrl: PopoverController,
     private user: UserService,
     private modalCtrl: ModalController
@@ -35,26 +35,22 @@ export class HomePage {
   presentingElement: any;
   segmentValue: String = 'lista';
   isOpen = false;
+  isModalOpen = false;
 
   ngOnInit() {
     this.presentingElement = document.querySelector('ion-content');
-    this.user.getRecordatorios().subscribe(recordatorios => {
+    this.user.getRecordatorios().subscribe((recordatorios) => {
       console.log(recordatorios);
       this.recordatorios = recordatorios;
-      this.highlightedDates = recordatorios.map(recordatorio => {
+      this.highlightedDates = recordatorios.map((recordatorio) => {
         return {
           date: recordatorio.date.toDate().toISOString(),
           textColor: 'red',
-          backgroundColor: 'red'
+          backgroundColor: 'red',
         };
       });
-      console.log(this.highlightedDates)
+      console.log(this.highlightedDates);
     });
-  }
-
-  onTermsChanged(event: Event) {
-    const ev = event as CheckboxCustomEvent;
-    this.canDismiss = ev.detail.checked;
   }
 
   segmentChanged(event: any) {
@@ -65,7 +61,7 @@ export class HomePage {
     this.popover.event = e;
     this.isOpen = true;
   }
-  
+
   irAConfig() {
     this.isOpen = false;
     this.popoverCtrl.dismiss();
@@ -88,23 +84,30 @@ export class HomePage {
   }
 
   async onSubmit() {
-    const dateTimestamp = Timestamp.fromDate(new Date(this.date)); 
-    const formData = {
+    const dateTimestamp = this.showDateTime ? Timestamp.fromDate(new Date(this.date)) : this.selectedRecordatorio?.date;
+    if (!dateTimestamp) {
+      console.error('Fecha no válida');
+      return;
+    }
+
+    const formData: Recordatorio = {
+      id: this.selectedRecordatorio?.id,
       title: this.title,
       notes: this.notes,
-      date: dateTimestamp 
+      date: dateTimestamp,
     };
-  
+
     console.log(formData);
-    const response = await this.user.addRecordatorio(formData);
+    const response = this.selectedRecordatorio
+      ? await this.user.editRecordatorio(formData)
+      : await this.user.addRecordatorio(formData);
     console.log(response);
   }
 
-  async onClcikDelete(recordatorio: Recordatorio){
+  async onClickDelete(recordatorio: Recordatorio) {
     const response = await this.user.deleteRecordatorio(recordatorio);
     console.log('Respuesta de eliminación:', response);
   }
-  isModalOpen = false;
 
   setOpen(isOpen: boolean) {
     this.isModalOpen = isOpen;
@@ -114,5 +117,16 @@ export class HomePage {
     this.showDateTime = event.detail.checked;
   }
 
-}
+  openEditModal(recordatorio: Recordatorio) {
+    this.selectedRecordatorio = recordatorio;
+    this.title = recordatorio.title;
+    this.notes = recordatorio.notes;
+    this.date = recordatorio.date.toDate().toISOString();
+    this.showDateTime = false; 
+    this.setOpen(true);
+  }
 
+  onDateChange(event: CustomEvent) {
+    this.date = event.detail.value;
+  }
+}

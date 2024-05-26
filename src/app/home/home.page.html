@@ -44,41 +44,33 @@
   </ng-template>
 </ion-popover>
 
-<ion-content [fullscreen]="true" >
+<ion-content [fullscreen]="true">
   <div *ngIf="segmentValue == 'lista'">
     <ion-header collapse="condense" mode="ios">
       <ion-toolbar>
         <ion-title size="large" color="naranja">Recordatorios</ion-title>
       </ion-toolbar>
     </ion-header>
-  
-    <ion-list  mode="ios" [inset]="true">
 
+    <ion-list mode="ios" [inset]="true">
       <ion-item-sliding *ngFor="let recordatorio of recordatorios">
-
-        <ion-item class="recordatorioItem">
-          <ion-label (click)="setOpen(true)">
-          <ion-checkbox labelPlacement="end" justify="start" mode="ios" >{{recordatorio.title}}</ion-checkbox>
-          <p id="details">{{recordatorio.notes}} </p><p> {{ recordatorio.date.toDate() | date: 'yyyy-MM-ddTHH:mm:ssZ' }}</p>  
+        <ion-item class="recordatorioItem" (click)="openEditModal(recordatorio)">
+          <ion-label>
+            <ion-checkbox labelPlacement="end" justify="start" mode="ios">{{recordatorio.title}}</ion-checkbox>
+            <p id="details">{{recordatorio.notes}}</p>
+            <p>{{ recordatorio.date.toDate() | date: 'yyyy-MM-ddTHH:mm:ssZ' }}</p>
           </ion-label>
-
-
         </ion-item>
         <ion-item-options side="start">
           <ion-item-option color="primary" expandable id="terminarBtn">Completar</ion-item-option>
         </ion-item-options>
         <ion-item-options side="end" *ngIf="recordatorio">
-          <ion-item-option color="borrar" expandable id="eliminarBtn" (click)="onClcikDelete(recordatorio)">
+          <ion-item-option color="borrar" expandable id="eliminarBtn" (click)="onClickDelete(recordatorio)">
             Eliminar
           </ion-item-option>
-        </ion-item-options> 
+        </ion-item-options>
       </ion-item-sliding>
-
-  
-      <!--https://ionicframework.com/docs/api/modal -->
-      
     </ion-list>
-    
   </div>
 
 
@@ -88,22 +80,22 @@
         <ion-title size="large" color="naranja">Calendario</ion-title>
       </ion-toolbar>
     </ion-header>
-
-
-    <ion-datetime presentation="date" [highlightedDates]="highlightedDates"></ion-datetime> 
-
-
+  
+    <ion-datetime presentation="date" [highlightedDates]="highlightedDates"></ion-datetime>
+  
     <ion-list [inset]="true">
       <ion-item-sliding *ngFor="let recordatorio of recordatorios">
-        <ion-item (click)="setOpen(true)">
-          <ion-checkbox slot="start" aria-label="Toggle task completion" labelPlacement="end" justify="start" mode="ios" >{{recordatorio.title}}</ion-checkbox>
+        <ion-item (click)="openEditModal(recordatorio)">
+          <ion-checkbox slot="start" aria-label="Toggle task completion" labelPlacement="end" justify="start" mode="ios">
+            {{recordatorio.title}}
+          </ion-checkbox>
         </ion-item>
-
+  
         <ion-item-options side="start">
           <ion-item-option color="primary" expandable id="terminarBtn">Completar</ion-item-option>
         </ion-item-options>
         <ion-item-options side="end">
-          <ion-item-option color="borrar" expandable id="eliminarBtn">
+          <ion-item-option color="borrar" expandable id="eliminarBtn" (click)="onClickDelete(recordatorio)">
             Eliminar
           </ion-item-option>
         </ion-item-options>
@@ -167,7 +159,7 @@
 
 
   <!--Recordatorio Modal-->
-  <ion-modal #modal [isOpen]="isModalOpen" [presentingElement]="presentingElement" >
+  <ion-modal #modal [isOpen]="isModalOpen" [presentingElement]="presentingElement">
     <ng-template>
       <ion-header>
         <ion-toolbar>
@@ -184,21 +176,22 @@
       <ion-content color="light">
         <ion-list [inset]="true">
           <ion-item>
-            <ion-input aria-label="Task name" placeholder="Titulo"></ion-input>
+            <ion-input [(ngModel)]="title" name="title" aria-label="Task name" placeholder="Titulo"></ion-input>
           </ion-item>
           <ion-item>
-            <ion-input placeholder="Notas"></ion-input>
+            <ion-input [(ngModel)]="notes" name="notes" placeholder="Notas"></ion-input>
           </ion-item>
-        </ion-list>
-      
-        <ion-list [inset]="true">
           <ion-item>
-            <ion-toggle color="success" (ionChange)="toggleDateTime($event)">
+            <ion-toggle color="success" [(ngModel)]="showDateTime" (ionChange)="toggleDateTime($event)">
               Fecha y Hora
             </ion-toggle>
           </ion-item>
           <ion-item *ngIf="showDateTime">
-            <ion-datetime display-format="DD/MM/YYYY HH:mm" placeholder="Selecciona fecha y hora"></ion-datetime>
+            <ion-datetime
+              [value]="date"
+              (ionChange)="onDateChange($event)"
+              placeholder="Selecciona fecha y hora">
+            </ion-datetime>
           </ion-item>
           <ion-item>
             <ion-toggle justify="space-between" color="success">
@@ -214,8 +207,6 @@
       </ion-content>
     </ng-template>
   </ion-modal>
-</ion-content>
-
 
 <ion-footer [translucent]="true">
   <ion-toolbar>
