@@ -5,7 +5,7 @@
     </ion-title> -->
     <ion-buttons slot="primary">
       <ion-button fill="clear" id="settings">
-        <ion-icon name="menu" slot="icon-only"></ion-icon>
+        <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-segment value="lista" (ionChange)="segmentChanged($event)">
@@ -91,6 +91,7 @@
     <ion-datetime presentation="date"></ion-datetime>
     <ion-list [inset]="true">
       <ion-item-sliding *ngFor="let recordatorio of recordatorios">
+        
         <ion-item (click)="abrirModalReco()">
           <ion-checkbox slot="start" aria-label="Toggle task completion" labelPlacement="end" justify="start" mode="ios" >{{recordatorio.title}}</ion-checkbox>
         </ion-item>
