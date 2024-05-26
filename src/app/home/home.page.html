@@ -107,12 +107,12 @@
           </ion-buttons>
           <ion-title allignment="center">Nuevo</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="submitAndDismiss()" color="primary">Listo</ion-button>
+            <ion-button (click)="submitAndDismissCreate()" color="primary">Listo</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
       <ion-content color="light">
-        <form (ngSubmit)="onSubmit()">
+        <form>
           <ion-list [inset]="true">
             <ion-item>
               <ion-input [(ngModel)]="title" name="title" aria-label="Task name" placeholder="Titulo"></ion-input>

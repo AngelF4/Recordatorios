@@ -73,6 +73,12 @@ export class HomePage {
     this.router.navigate(['/login']);
   }
 
+  submitAndDismissCreate() {
+    this.onCreateRecordatorio();
+    this.dismissModal();
+    this.setOpen(false);
+  }
+
   submitAndDismiss() {
     this.onSubmit();
     this.dismissModal();
@@ -101,6 +107,19 @@ export class HomePage {
     const response = this.selectedRecordatorio
       ? await this.user.editRecordatorio(formData)
       : await this.user.addRecordatorio(formData);
+    console.log(response);
+  }
+
+  async onCreateRecordatorio() {
+    const dateTimestamp = Timestamp.fromDate(new Date(this.date)); 
+    const formData = {
+      title: this.title,
+      notes: this.notes,
+      date: dateTimestamp 
+    };
+  
+    console.log(formData);
+    const response = await this.user.addRecordatorio(formData);
     console.log(response);
   }
 
