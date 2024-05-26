@@ -6,6 +6,7 @@ import { Firestore, collectionData } from '@angular/fire/firestore';
 import { ToastController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { getAuth } from 'firebase/auth';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class UserService {private currentUser: User | null = null;
 
   constructor(private auth: Auth,
     private firestore: Firestore,
-    private toastController: ToastController) {
+    private toastController: ToastController,
+    private router: Router) {
 this.auth.onAuthStateChanged(user => {
 this.currentUser = user;
 });
@@ -69,6 +71,7 @@ this.currentUser = user;
       return addDoc(recordatorioRef, recordatorio);
     } else {
       throw new Error('User not authenticated');
+      this.router.navigate(['/login']);
     }
   }
   
@@ -79,6 +82,7 @@ this.currentUser = user;
       return collectionData(orderedRecordatorioQuery, { idField: 'id' }) as Observable<Recordatorio[]>;
     } else {
       throw new Error('User not authenticated');
+      this.router.navigate(['/login']);
     }
   }
 
@@ -94,6 +98,7 @@ this.currentUser = user;
       }
     } else {
       throw new Error('User not authenticated');
+      this.router.navigate(['/login']);
     }
   }
   
@@ -109,6 +114,7 @@ this.currentUser = user;
       }
     } else {
       throw new Error('User not authenticated');
+      this.router.navigate(['/login']);
     }
   }
 }
